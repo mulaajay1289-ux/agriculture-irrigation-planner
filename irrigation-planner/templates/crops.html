@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="hero">
+
+    <h1>🌱 Crop Management</h1>
+
+    <p>
+        Manage crops used by the irrigation optimizer.
+    </p>
+
+</div>
+
+
+<div class="card">
+
+    <table>
+
+        <tr>
+            <th>Crop</th>
+            <th>Minimum</th>
+            <th>Maximum</th>
+            <th>Yield Rate</th>
+            <th>Priority</th>
+            <th>Action</th>
+        </tr>
+
+
+        {% for crop in crops %}
+
+        <tr>
+
+            <td>{{ crop.name }}</td>
+
+            <td>{{ crop.min_water }} L</td>
+
+            <td>{{ crop.max_water }} L</td>
+
+            <td>{{ crop.yield_rate }}</td>
+
+            <td>{{ crop.priority }}</td>
+
+            <td>
+
+                <a href="/delete_crop/{{ crop.id }}">
+
+                    <button class="delete">
+                        Delete
+                    </button>
+
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+{% endblock %}

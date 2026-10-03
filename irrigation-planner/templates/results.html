@@ -1,0 +1,390 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if error %}
+
+<div class="danger">
+
+    <h2>⚠️ Cannot Optimize</h2>
+
+    <p>{{ message }}</p>
+
+</div>
+
+{% else %}
+
+<div class="hero">
+
+    <h1>📊 Optimization Results</h1>
+
+    <p>
+        Available Water:
+        <strong>{{ available_water }} L</strong>
+    </p>
+
+</div>
+
+
+<div class="cards">
+
+    <div class="card">
+
+        <h3>🟢 Greedy Yield</h3>
+
+        <h2>{{ greedy_yield }}</h2>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>🔵 DP Yield</h3>
+
+        <h2>{{ dp_yield }}</h2>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>💧 Greedy Water</h3>
+
+        <h2>{{ greedy_water }} L</h2>
+
+    </div>
+
+
+    <div class="card">
+
+        <h3>💧 DP Water</h3>
+
+        <h2>{{ dp_water }} L</h2>
+
+    </div>
+
+</div>
+
+
+<div class="section">
+
+    <div class="success">
+
+        <h2>🌱 Recommended Irrigation Plan</h2>
+
+        <p>
+            Based on the available water, the system
+            recommends the following allocation:
+        </p>
+
+        <table>
+
+            <tr>
+                <th>Crop</th>
+                <th>Recommended Water</th>
+                <th>Expected Yield</th>
+            </tr>
+
+            {% for item in dp_result %}
+
+            <tr>
+
+                <td>
+                    🌱 {{ item.name }}
+                </td>
+
+                <td>
+                    💧 {{ item.allocation }} L
+                </td>
+
+                <td>
+                    📈 {{ "%.2f"|format(item.yield) }}
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+        <br>
+
+        <strong>
+            Total Water Used:
+            {{ dp_water }} L
+        </strong>
+
+        <br>
+
+        <strong>
+            Total Expected Yield:
+            {{ dp_yield }}
+        </strong>
+
+    </div>
+
+</div>
+
+
+<div class="section">
+
+    <div class="card">
+
+        <h2>🔵 Dynamic Programming Allocation</h2>
+
+        <table>
+
+            <tr>
+                <th>Crop</th>
+                <th>Allocated Water</th>
+                <th>Expected Yield</th>
+            </tr>
+
+
+            {% for item in dp_result %}
+
+            <tr>
+
+                <td>{{ item.name }}</td>
+
+                <td>{{ item.allocation }} L</td>
+
+                <td>
+                    {{ "%.2f"|format(item.yield) }}
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<div class="section">
+
+    <div class="card">
+
+        <h2>🟢 Greedy Allocation</h2>
+
+        <table>
+
+            <tr>
+                <th>Crop</th>
+                <th>Allocated Water</th>
+                <th>Expected Yield</th>
+            </tr>
+
+
+            {% for item in greedy_result %}
+
+            <tr>
+
+                <td>{{ item.name }}</td>
+
+                <td>{{ item.allocation }} L</td>
+
+                <td>
+                    {{ "%.2f"|format(item.yield) }}
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<div class="section">
+
+    <div class="card">
+
+        <h2>⚖️ Algorithm Comparison</h2>
+
+        <p>
+            This chart compares the total expected yield
+            produced by the two algorithms.
+        </p>
+
+        <canvas id="comparisonChart"></canvas>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const algorithmNames = [
+    "Greedy",
+    "Dynamic Programming"
+];
+
+const algorithmYields = [
+    {{ greedy_yield }},
+    {{ dp_yield }}
+];
+
+
+new Chart(
+
+    document.getElementById("comparisonChart"),
+
+    {
+        type: "bar",
+
+        data: {
+
+            labels: algorithmNames,
+
+            datasets: [
+
+                {
+                    label: "Expected Yield",
+
+                    data: algorithmYields
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            scales: {
+
+                y: {
+                    beginAtZero: true
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+</script>
+
+
+<div class="section">
+
+    <div class="card">
+
+        <h2>🤖 Smart Irrigation Explanation</h2>
+
+        <p>
+            The system analyzed the available water,
+            crop requirements, yield rates and priorities.
+        </p>
+
+        <ul>
+
+            {% for item in dp_result %}
+
+            <li>
+                <strong>{{ item.name }}</strong> received
+                <strong>{{ item.allocation }} L</strong>
+                of water and is expected to produce
+                <strong>{{ "%.2f"|format(item.yield) }}</strong>
+                yield units.
+            </li>
+
+            {% endfor %}
+
+        </ul>
+
+        <p>
+            <strong>Why this plan?</strong>
+            The Dynamic Programming algorithm searches
+            for an allocation that maximizes expected
+            yield while respecting the irrigation limits.
+        </p>
+
+        <p>
+            💧 Total available water:
+            <strong>{{ available_water }} L</strong>
+        </p>
+
+        <p>
+            🌱 Total expected yield:
+            <strong>{{ dp_yield }}</strong>
+        </p>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const cropNames = [
+    {% for item in dp_result %}
+        "{{ item.name }}",
+    {% endfor %}
+];
+
+
+const cropWater = [
+    {% for item in dp_result %}
+        {{ item.allocation }},
+    {% endfor %}
+];
+
+
+new Chart(
+
+    document.getElementById("allocationChart"),
+
+    {
+        type: "bar",
+
+        data: {
+
+            labels: cropNames,
+
+            datasets: [
+
+                {
+                    label: "Allocated Water (L)",
+
+                    data: cropWater
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            scales: {
+
+                y: {
+                    beginAtZero: true
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+</script>
+
+{% endif %}
+
+{% endblock %}

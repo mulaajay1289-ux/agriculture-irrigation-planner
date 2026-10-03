@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SmartIrrigate</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7f5;
+            color: #222;
+        }
+
+        nav {
+            background: #166534;
+            padding: 18px 40px;
+            color: white;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h2 {
+            margin: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .hero {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 15px;
+
+            box-shadow:
+                0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 7px 0 15px;
+
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            background: #16a34a;
+            color: white;
+            border: none;
+
+            padding: 12px 20px;
+            border-radius: 8px;
+
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #15803d;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #dcfce7;
+        }
+
+        .section {
+            margin-top: 30px;
+        }
+
+        .success {
+            background: #dcfce7;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .danger {
+            background: #fee2e2;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .delete {
+            background: #dc2626;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<nav>
+
+    <h2>🌾 SmartIrrigate</h2>
+
+    <div>
+
+        <a href="/">Dashboard</a>
+
+        <a href="/crops">Crops</a>
+
+    </div>
+
+</nav>
+
+<div class="container">
+
+    {% block content %}
+
+    {% endblock %}
+
+</div>
+
+</body>
+
+</html>
